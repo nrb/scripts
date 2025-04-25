@@ -78,8 +78,8 @@ configure_networking () {
     # Tell the kind control plane nodes that they have to reference the container $reg_name when trying to access localhost:$reg_port
     REGISTRY_DIR="/etc/containerd/certs.d/localhost:${reg_port}"
     for node in $(kind --name ${cluster_name} get nodes); do
-      docker exec "${node}" mkdir -p "${REGISTRY_DIR}"
-      cat <<EOF | docker exec -i "${node}" cp /dev/stdin "${REGISTRY_DIR}/hosts.toml"
+      podman exec "${node}" mkdir -p "${REGISTRY_DIR}"
+      cat <<EOF | podman exec -i "${node}" cp /dev/stdin "${REGISTRY_DIR}/hosts.toml"
 [host."http://${reg_name}:5000"]
 EOF
     done
